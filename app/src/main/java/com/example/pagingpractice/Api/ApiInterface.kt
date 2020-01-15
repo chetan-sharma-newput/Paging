@@ -9,7 +9,7 @@ interface ApiInterface {
 
 
     @GET("users")
-    suspend fun getList(@Query("page") page: Int): UserResponse
+    suspend fun getList(@Query("page") page: Int): DataResultBean
 
 
 }

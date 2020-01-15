@@ -9,15 +9,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class PageDataSource(private val scope: CoroutineScope) :
-    PageKeyedDataSource<Int, User>() {
+    PageKeyedDataSource<Int, UserListBean>() {
 
     private val retrofitRepository = RetrofitRepository()
 
 
-    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, User>) {
+    override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, UserListBean>) {
         scope.launch {
 
-            val result = retrofitRepository.getListForPage(1).users
+            val result = retrofitRepository.getListForPage(1).data
 
             callback.onResult(result!!, 1, 2 )
 
@@ -27,21 +27,21 @@ class PageDataSource(private val scope: CoroutineScope) :
 
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, UserListBean>) {
 
         scope.launch {
 
-            val result = retrofitRepository.getListForPage(params.key).users
+            val result = retrofitRepository.getListForPage(params.key).data
             callback.onResult(result!!, params.key)
 
             Log.d("loadAfter", "$result")
         }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, UserListBean>) {
         scope.launch {
 
-            val result = retrofitRepository.getListForPage(params.key).users
+            val result = retrofitRepository.getListForPage(params.key).data
             val responseItems = result
             val key = if (params.key > 1) params.key - 1 else 0
             responseItems.let {

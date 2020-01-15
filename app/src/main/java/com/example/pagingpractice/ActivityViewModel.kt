@@ -13,7 +13,7 @@ class ActivityViewModel : ViewModel() {
 
     private val retrofitRepository = RetrofitRepository()
 
-    val userPagedList: LiveData<PagedList<User>>
+    val userPagedList: LiveData<PagedList<UserListBean>>
     private var liveDataSource = MutableLiveData<PageDataSource>()
 
 

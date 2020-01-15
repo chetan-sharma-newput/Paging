@@ -9,13 +9,12 @@ import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pagingpractice.DataResultBean
 import com.example.pagingpractice.R
 import com.example.pagingpractice.User
 import com.example.pagingpractice.UserListBean
 import com.squareup.picasso.Picasso
 
-class PagedAdapter : PagedListAdapter<User, PagedAdapter.ViewHolder>(Diff) {
+class PagedAdapter : PagedListAdapter<UserListBean, PagedAdapter.ViewHolder>(Diff) {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,29 +43,29 @@ class PagedAdapter : PagedListAdapter<User, PagedAdapter.ViewHolder>(Diff) {
         private val id_tv: TextView = itemView.findViewById(R.id.id_tv)
 
         @SuppressLint("SetTextI18n")
-        fun bindItem(userListBean: User) {
+        fun bindItem(userListBean: UserListBean) {
 
             Picasso.get().load(userListBean.avatar).into(imageView)
-            name_tv.text = "Name - ${userListBean.firstName} ${userListBean.lastName}"
+            name_tv.text = "Name - ${userListBean.first_name} ${userListBean.last_name}"
             id_tv.text = "Id - ${userListBean.id}"
         }
     }
 
     companion object {
 
-        private val Diff = object : DiffUtil.ItemCallback<User>() {
+        private val Diff = object : DiffUtil.ItemCallback<UserListBean>() {
             override fun areContentsTheSame(
-                oldItem: User,
-                newItem: User
+                oldItem: UserListBean,
+                newItem: UserListBean
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areItemsTheSame(
-                oldItem: User,
-                newItem: User
+                oldItem: UserListBean,
+                newItem: UserListBean
             ): Boolean {
-                return oldItem.firstName == newItem.firstName
+                return oldItem.first_name == newItem.first_name
             }
         }
     }
