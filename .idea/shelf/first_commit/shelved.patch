@@ -1,0 +1,129 @@
+Index: app/src/main/java/com/example/pagingpractice/PagedAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/pagingpractice/PagedAdapter.kt	(date 1578991494000)
++++ app/src/main/java/com/example/pagingpractice/PagedAdapter.kt	(date 1578991494000)
+@@ -0,0 +1,4 @@
++package com.example.pagingpractice
++
++class PagedAdapter {
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<androidx.constraintlayout.widget.ConstraintLayout\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    tools:context=\".MainActivity\">\n\n    <TextView\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"wrap_content\"\n        android:text=\"Hello World!\"\n        app:layout_constraintBottom_toBottomOf=\"parent\"\n        app:layout_constraintLeft_toLeftOf=\"parent\"\n        app:layout_constraintRight_toRightOf=\"parent\"\n        app:layout_constraintTop_toTopOf=\"parent\" />\n\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_main.xml	(date 1578990003000)
++++ app/src/main/res/layout/activity_main.xml	(date 1578991188000)
+@@ -1,6 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout
+-    xmlns:android="http://schemas.android.com/apk/res/android"
++<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+@@ -8,12 +7,22 @@
+     tools:context=".MainActivity">
+ 
+     <TextView
++        android:id="@+id/paging_tv"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:gravity="center"
++        android:padding="10dp"
++        android:text="Paging" />
++
++    <androidx.recyclerview.widget.RecyclerView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:layout_below="@+id/paging_tv"
++        android:padding="15dp"
+         android:text="Hello World!"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintRight_toRightOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+ 
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
++</RelativeLayout>
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\n\napply plugin: 'kotlin-android'\n\napply plugin: 'kotlin-android-extensions'\n\nandroid {\n    compileSdkVersion 29\n    defaultConfig {\n        applicationId \"com.example.pagingpractice\"\n        minSdkVersion 15\n        targetSdkVersion 29\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\n    implementation\"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version\"\n    implementation 'androidx.appcompat:appcompat:1.1.0'\n    implementation 'androidx.core:core-ktx:1.1.0'\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\n    testImplementation 'junit:junit:4.12'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.1'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(date 1578990003000)
++++ app/build.gradle	(date 1578990914000)
+@@ -31,4 +31,24 @@
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
++
++    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
++    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
++
++    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
++
++    implementation 'com.squareup.picasso:picasso:2.71828'
++
++    implementation 'com.squareup.retrofit2:converter-gson:2.6.3'
++    implementation 'com.squareup.retrofit2:retrofit:2.6.3'
++
++    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.0'
++    implementation 'com.google.android.material:material:1.0.0'
++
++    def paging_version = "2.1.1"
++
++    implementation "androidx.paging:paging-runtime-ktx:$paging_version" // For Kotlin use paging-runtime-ktx
++
++
++
+ }
+Index: app/src/main/java/com/example/pagingpractice/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.pagingpractice\n\nimport androidx.appcompat.app.AppCompatActivity\nimport android.os.Bundle\n\nclass MainActivity : AppCompatActivity() {\n\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContentView(R.layout.activity_main)\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/pagingpractice/MainActivity.kt	(date 1578990003000)
++++ app/src/main/java/com/example/pagingpractice/MainActivity.kt	(date 1578991188000)
+@@ -8,5 +8,10 @@
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
+         setContentView(R.layout.activity_main)
++
++
++
++
++
+     }
+ }
+Index: app/src/main/java/com/example/pagingpractice/ActivityViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/pagingpractice/ActivityViewModel.kt	(date 1578991495000)
++++ app/src/main/java/com/example/pagingpractice/ActivityViewModel.kt	(date 1578991495000)
+@@ -0,0 +1,11 @@
++package com.example.pagingpractice
++
++import androidx.lifecycle.MutableLiveData
++import androidx.lifecycle.ViewModel
++import androidx.paging.PagedList
++
++class ActivityViewModel :ViewModel() {
++    var listData = MutableLiveData<PagedList<String>>()
++
++
++}
